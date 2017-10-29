@@ -43,7 +43,7 @@ IoController.listen= function(httpServer){
                     }
                     if(currentPresId!=null && currentPresId!=undefined)
                     {
-                        fs.readFile(CONFIG.presentationDirectory+"/"+currentPresId+".pres.json",function(err,data)
+                        fs.readFile(CONFIG.presentationDirectory+"/"+json.PRES_ID+".pres.json",function(err,data)
                         {
                             if(!!err)
                             {	
@@ -51,7 +51,6 @@ IoController.listen= function(httpServer){
                                 return;
                             }
                             var parsed = JSON.parse(data);
-                            console.log(parsed);
                             if(parsed.slidArray.length>=1){
                                 switch(json.CMD){
                                     case "START":
@@ -73,6 +72,7 @@ IoController.listen= function(httpServer){
                                     break;
                                 }
                                 var currentSlideId= parsed.slidArray[cptSlide].id;
+                                console.log(parsed.slidArray[cptSlide]);
                                 ContentModel.read(currentSlideId, function (err, content) {
                                     if(!!err)
                                         {
@@ -83,17 +83,14 @@ IoController.listen= function(httpServer){
                                 console.log(content.src);
                                 fs.readFile(CONFIG.contentDirectory+content.id+".meta.json",function(err,data){
 
-                                                        var parsed = JSON.parse(data);
-                            console.log(parsed);
-var obj = new Object();
-   obj.slid = new Object();
-   obj.content  = new Object();
-   obj.content.src="/contents/62cf58dd-ecb1-495a-899c-b7c633fa1df7";
-   var jsonString= JSON.stringify(obj);
-                            console.log(jsonString);
+                                var parsed = JSON.parse(data);
+                                console.log("la");
+                                    console.log(parsed);
+                                console.log("la");
 
 
-                                                            for (var i in socketMap){
+
+                                for (var i in socketMap){
                                     socketMap[i].emit('currentSlidEvent',parsed);
                                 }
                         });
